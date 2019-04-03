@@ -1,6 +1,7 @@
 import {combineReducers} from 'redux';
-import itemReducer from './itemReducer';
+import answerReducer from './answerReducer';
+
 
 export default combineReducers({
-    item: itemReducer
+    answer: answerReducer
 });

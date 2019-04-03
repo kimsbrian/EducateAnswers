@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import AppNavBar from './components/AppNavbar';
-import ShoppingList from './components/ShoppingList'
 import {Provider} from 'react-redux';
 import store from './store';
-import ItemModal from './components/ItemModal'
+import FormURL from './components/FormURL';
+
 import {Container} from 'reactstrap';
 
 class App extends Component {
@@ -15,8 +15,7 @@ class App extends Component {
       <div className="App">
         <AppNavBar/>
         <Container>
-        <ItemModal/>
-        <ShoppingList/>
+        <FormURL/>
         </Container>
       </div>
       </Provider>
