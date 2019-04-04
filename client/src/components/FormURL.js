@@ -11,14 +11,10 @@ export default class FormURL extends Component {
     valid: true
   }
 
-  onSubmit = e => {
-    e.preventDefault();
-    if (this.state.url.length > 0) {
-      const position = this.state.url.lastIndexOf("q") + 1;
-      const questionID = this.state.url.substring(position);
-      axios.get(`./api/answers/${questionID}`)
+  getAgain = number => {
+    console.log('bye');
+      axios.get(`./api/answers/${number}`)
         .then((response) => {
-          // handle success
           if (response.data[0] !== undefined) {
             this.setState({
               valid: true,
@@ -26,20 +22,48 @@ export default class FormURL extends Component {
               answerData: response.data[0]
             });
           }
+          else{
+            this.setState({
+              valid: false,
+              submitted: false
+            });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+  }
 
+  sleep = (milliseconds) => {
+    return new Promise(resolve => setTimeout(resolve, milliseconds))
+  }
+  
+  onSubmit = e => {
+    e.preventDefault();
+    console.log('hello');
+    if (this.state.url.length > 0) {
+      const position = this.state.url.lastIndexOf("q") + 1;
+      const questionID = this.state.url.substring(position);
+      axios.get(`./api/answers/${questionID}`)
+        .then((response) => {
+          if (response.data[0] !== undefined) {
+            this.setState({
+              valid: true,
+              submitted: true,
+              answerData: response.data[0]
+            });
+          }
+          else{
+            this.sleep(4000).then(() =>{
+              this.getAgain(questionID)
+            })
+          }
 
         })
         .catch((error) => {
-          // handle error
-          this.setState({
-            valid: false,
-            submitted: false
-          });
           console.log(error);
         })
         .then(() => {
-          // always executed
-
         });
     }
   }
@@ -50,7 +74,6 @@ export default class FormURL extends Component {
   }
   render() {
     const { answerData } = this.state;
-    const { picture } = answerData;
     return (
       <div>
         <h3>Hello!</h3>
