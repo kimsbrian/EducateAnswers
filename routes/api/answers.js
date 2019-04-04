@@ -14,7 +14,9 @@ router.get('/:id', (req, res) => {
             var util = require("util");
             var spawn = require("child_process").spawn;
             var path = require('path');
-            var process = spawn('python',[path.resolve(__dirname, 'test.py'), String(req.params.id)]);
+            const portNumber = require('../../server')
+
+            var process = spawn('python',[path.resolve(__dirname, 'test.py'), String(req.params.id), String(portNumber)]);
 
             var uint8arrayToString = function(data){
                 return String.fromCharCode.apply(null, data);

@@ -66,6 +66,7 @@ for s in scripts:
 
   
 url = "https://www.chegg.com/homework-help/questions-and-answers/-q"+sys.argv[1]
+port = sys.argv[2]
 tab.call_method("Page.navigate", url=url, _timeout=5)
 tab.wait(.5)
 
@@ -86,7 +87,7 @@ try:
             'url': sys.argv[1]
             }
 
-    r = requests.post('http://localhost:5000/api/answers', json=data)
+    r = requests.post('http://localhost:'+port+'/api/answers', json=data)
 finally:
     tab.stop()
     browser.close_tab(tab)
