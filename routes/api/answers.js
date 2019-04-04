@@ -15,6 +15,26 @@ router.get('/:id', (req, res) => {
             var spawn = require("child_process").spawn;
             var path = require('path');
             var process = spawn('python',[path.resolve(__dirname, 'test.py'), String(req.params.id)]);
+
+            var uint8arrayToString = function(data){
+                return String.fromCharCode.apply(null, data);
+            };
+
+            process.stdout.on('data', (data) => {
+                console.log(uint8arrayToString(data));
+            });
+            
+            // Handle error output
+            process.stderr.on('data', (data) => {
+                // As said before, convert the Uint8Array to a readable string.
+                console.log(uint8arrayToString(data));
+            });
+            
+            process.on('exit', (code) => {
+                console.log("Process quit with code : " + code);
+            });
+            
+
         }
         res.json(answers)
     })
