@@ -16,12 +16,14 @@ router.get('/:id', (req, res) => {
                 console.log('HEHE')
                 const nani = run(String(req.params.id))
                     .then(({question,answer,url}) => {
+                        console.log('HEHE')
                         return res.json({
                             question:question,
                             answer:answer,
                             url:url
                         })
                     }).catch((error) => {
+                        console.log('NOOOOO')
                         return res.json('error')
                         return res.status(404).send();
                     });
