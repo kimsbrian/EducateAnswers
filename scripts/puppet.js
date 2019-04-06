@@ -1,6 +1,6 @@
 // We'll use Puppeteer is our browser automation framework.
 const puppeteer = require('puppeteer');
-const CREDS = require('../config/creds');
+//const CREDS = require('../config/creds');
 //const addAnswer = require('.\\
 const axios = require('axios')
 const port = require('../server')
