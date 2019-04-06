@@ -102,7 +102,7 @@ async function run(number) {
   */
   url = "https://www.chegg.com/homework-help/questions-and-answers/-q" + number
   await page.goto(url);
-  console.log('WAITINGman')
+  console.log('WAITING')
 
 
   if (await page.$('div.ugc-base:nth-child(2)') !== null) {
