@@ -102,9 +102,11 @@ async function run(number) {
   */
   url = "https://www.chegg.com/homework-help/questions-and-answers/-q" + number
   await page.goto(url);
+  console.log('WAITING')
 
 
   if (await page.$('div.ugc-base:nth-child(2)') !== null) {
+    console.log('IM IN')
     const html = await page.evaluate(() => {
       const question = document.querySelector('div.ugc-base:nth-child(2)').innerHTML;
       let answer = 'None';
@@ -143,6 +145,7 @@ async function run(number) {
   }
   else {
     await browser.close()
+    console.log('NOTHING HAPPENED')
     return {
     }
   }

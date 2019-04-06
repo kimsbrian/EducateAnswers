@@ -17,6 +17,7 @@ router.get('/:id', (req, res) => {
                 const nani = run(String(req.params.id))
                     .then(({question,answer,url}) => {
                         console.log('HEHE')
+                        console.log(question)
                         return res.json({
                             question:question,
                             answer:answer,
