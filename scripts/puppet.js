@@ -70,6 +70,7 @@ const preparePageForTests = async (page) => {
 
 async function run(number) {
   // Launch the browser in headless mode and set up a page.
+  console.log('TEST')
   const browser = await puppeteer.launch({
     args: ['--no-sandbox'],
     headless: true,

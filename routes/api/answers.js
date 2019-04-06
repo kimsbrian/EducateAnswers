@@ -10,9 +10,10 @@ const Answer = require('../../models/Answer');
 router.get('/:id', (req, res) => {
     Answer.find({ url: req.params.id })
         .then(answers => {
-           
+            console.log('HOHO')
             if (!answers.length || answers[0].answer =='None') {      
                 const run = require('../../scripts/puppet');
+                console.log('HEHE')
                 const nani = run(String(req.params.id))
                     .then(({question,answer,url}) => {
                         return res.json({
