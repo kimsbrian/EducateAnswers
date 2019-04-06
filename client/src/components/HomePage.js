@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Button, Input, Form, FormGroup } from 'reactstrap';
 import axios from 'axios';
 import '../App.css';
-export default class FormURL extends Component {
+export default class HomePage extends Component {
 
   state = {
     url: '',
@@ -10,16 +10,21 @@ export default class FormURL extends Component {
     answerData: [],
     valid: true
   }
-
-  getAgain = number => {
-    console.log('bye');
-      axios.get(`./api/answers/${number}`)
+  
+  onSubmit = e => {
+    e.preventDefault();
+    const position = this.state.url.lastIndexOf("q") + 1;
+    const questionID = this.state.url.substring(position);
+    if (this.state.url.length > 0 && /^\d+$/.test(questionID)) {
+      axios.get(`./api/answers/${questionID}`)
         .then((response) => {
-          if (response.data[0] !== undefined) {
+          console.log('reach')
+          console.log(response.data)
+          if (response.data.question !== undefined) {
             this.setState({
               valid: true,
               submitted: true,
-              answerData: response.data[0]
+              answerData: response.data
             });
           }
           else{
@@ -28,36 +33,6 @@ export default class FormURL extends Component {
               submitted: false
             });
           }
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-  }
-
-  sleep = (milliseconds) => {
-    return new Promise(resolve => setTimeout(resolve, milliseconds))
-  }
-  
-  onSubmit = e => {
-    e.preventDefault();
-    console.log('hello');
-    if (this.state.url.length > 0) {
-      const position = this.state.url.lastIndexOf("q") + 1;
-      const questionID = this.state.url.substring(position);
-      axios.get(`./api/answers/${questionID}`)
-        .then((response) => {
-          if (response.data[0] !== undefined) {
-            this.setState({
-              valid: true,
-              submitted: true,
-              answerData: response.data[0]
-            });
-          }
-          else{
-            this.sleep(4000).then(() =>{
-              this.getAgain(questionID)
-            })
-          }
 
         })
         .catch((error) => {
@@ -65,6 +40,12 @@ export default class FormURL extends Component {
         })
         .then(() => {
         });
+    }
+    else{
+      this.setState({
+        valid: false,
+        submitted: false
+      });
     }
   }
 

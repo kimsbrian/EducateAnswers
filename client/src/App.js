@@ -4,7 +4,7 @@ import './App.css';
 import AppNavBar from './components/AppNavbar';
 import {Provider} from 'react-redux';
 import store from './store';
-import FormURL from './components/FormURL';
+import HomePage from './components/HomePage';
 
 import {Container} from 'reactstrap';
 
@@ -15,7 +15,7 @@ class App extends Component {
       <div className="App">
         <AppNavBar/>
         <Container>
-        <FormURL/>
+        <HomePage/>
         </Container>
       </div>
       </Provider>

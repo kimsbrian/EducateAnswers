@@ -8,38 +8,28 @@ const Answer = require('../../models/Answer');
 // @desc     Get Answer by URL
 // @access   Public
 router.get('/:id', (req, res) => {
-    Answer.find({url:req.params.id})
-    .then(answers => {
-        if(!answers.length){
-            var util = require("util");
-            var spawn = require("child_process").spawn;
-            var path = require('path');
-            const portNumber = require('../../server')
+    Answer.find({ url: req.params.id })
+        .then(answers => {
+           
+            if (!answers.length || answers[0].answer =='None') {      
+                const run = require('../../scripts/puppet');
+                const nani = run(String(req.params.id))
+                    .then(({question,answer,url}) => {
+                        return res.json({
+                            question:question,
+                            answer:answer,
+                            url:url
+                        })
+                    }).catch((error) => {
+                        return res.json('error')
+                        return res.status(404).send();
+                    });
 
-            var process = spawn('python',[path.resolve(__dirname, 'test.py'), String(req.params.id), String(portNumber)]);
-
-            var uint8arrayToString = function(data){
-                return String.fromCharCode.apply(null, data);
-            };
-
-            process.stdout.on('data', (data) => {
-                console.log(uint8arrayToString(data));
-            });
-            
-            // Handle error output
-            process.stderr.on('data', (data) => {
-                // As said before, convert the Uint8Array to a readable string.
-                console.log(uint8arrayToString(data));
-            });
-            
-            process.on('exit', (code) => {
-                console.log("Process quit with code : " + code);
-            });
-            
-
-        }
-        res.json(answers)
-    })
+                     
+            }else{
+                res.send(answers[0])
+            }
+        })
 });
 
 
@@ -48,7 +38,7 @@ router.get('/:id', (req, res) => {
 // @access   Public
 router.get('/', (req, res) => {
     Answer.find()
-    .then(answers => res.json(answers))
+        .then(answers => res.json(answers))
 });
 
 // @route    POST api/items
@@ -56,30 +46,30 @@ router.get('/', (req, res) => {
 // @access   Public
 router.post('/', (req, res) => {
     const conditions = {
-        url : req.body.url,
+        url: req.body.url,
         answer: 'None'
     };
-    
+
     const newAnswer = new Answer({
         question: req.body.question,
         answer: req.body.answer,
         url: req.body.url
     });
 
-    Answer.findOneAndUpdate(conditions, req.body, { upsert: true, new:true, useFindAndModify: false }, 
+    Answer.findOneAndUpdate(conditions, req.body, { upsert: true, new: true, useFindAndModify: false },
         (err, result) => {
-        if (err) return res.send(err)
-        res.send(result)
-      });
+            if (err) return res.send(err)
+            res.send(result)
+        });
 });
 
 // @route    DELETE api/items/:id
 // @desc     Create An Item
 // @access   Public
 router.delete('/:id', (req, res) => {
-  Answer.findById(req.params.id)
-    .then(answer => answer.remove().then(() => res.json({ success: true })))
-    .catch(err => res.status(404).json({ success: false }));
+    Answer.findById(req.params.id)
+        .then(answer => answer.remove().then(() => res.json({ success: true })))
+        .catch(err => res.status(404).json({ success: false }));
 });
 
 
