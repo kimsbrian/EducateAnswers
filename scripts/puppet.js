@@ -104,6 +104,11 @@ async function run(number) {
   await page.goto(url);
   console.log('WAITING')
 
+  const html = await page.evaluate(() => {
+    let bodyHTML = await page.evaluate(() => document.body.innerHTML);
+    console.log('body'+bodyHTML);
+  })
+
 
   if (await page.$('div.ugc-base:nth-child(2)') !== null) {
     console.log('IM IN')
