@@ -82,6 +82,7 @@ async function run(number) {
   // Prepare for the tests (not yet implemented).
   await preparePageForTests(page);
 
+
   // Navigate to the page that will perform the tests.
   //const testUrl = 'https://www.distilnetworks.com/';
 
@@ -104,8 +105,6 @@ async function run(number) {
   */
   url = "https://www.chegg.com/homework-help/questions-and-answers/-q" + number
   await page.goto(url);
-
-    let bodyHTML = await page.evaluate(() => document.body.innerHTML);
 
 
   if (await page.$('div.ugc-base:nth-child(2)') !== null) {

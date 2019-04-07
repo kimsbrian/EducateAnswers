@@ -45,7 +45,8 @@ exports.port = port;
 async function run () {
     let browser = await puppeteer.launch({
         args: ['--no-sandbox'],
-        headless: true,
+        //args: ['--no-sandbox','--proxy-server=10.8.0.1:1080'],
+        headless: false,
       });
       exports.browser = browser
 
