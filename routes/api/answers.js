@@ -10,21 +10,16 @@ const Answer = require('../../models/Answer');
 router.get('/:id', (req, res) => {
     Answer.find({ url: req.params.id })
         .then(answers => {
-            console.log('HOHO')
             if (!answers.length || answers[0].answer =='None') {      
                 const run = require('../../scripts/puppet');
-                console.log('HEHE')
                 const nani = run(String(req.params.id))
                     .then(({question,answer,url}) => {
-                        console.log('HEHE')
-                        console.log(question)
                         return res.json({
                             question:question,
                             answer:answer,
                             url:url
                         })
                     }).catch((error) => {
-                        console.log('NOOOOO')
                         return res.json('error')
                         return res.status(404).send();
                     });

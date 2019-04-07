@@ -70,7 +70,6 @@ const preparePageForTests = async (page) => {
 
 async function run(number) {
   // Launch the browser in headless mode and set up a page.
-  console.log('TEST')
   const browser = await puppeteer.launch({
     args: ['--no-sandbox'],
     headless: true,
@@ -102,14 +101,11 @@ async function run(number) {
   */
   url = "https://www.chegg.com/homework-help/questions-and-answers/-q" + number
   await page.goto(url);
-  console.log('WAITING')
 
     let bodyHTML = await page.evaluate(() => document.body.innerHTML);
-    console.log('body'+bodyHTML);
 
 
   if (await page.$('div.ugc-base:nth-child(2)') !== null) {
-    console.log('IM IN')
     const html = await page.evaluate(() => {
       const question = document.querySelector('div.ugc-base:nth-child(2)').innerHTML;
       let answer = 'None';
@@ -117,7 +113,6 @@ async function run(number) {
         answer = document.querySelector('.answer-given-body').innerHTML;
         }
         catch(error){
-          console.log('No Answer');
         }
       return {
         question: question,
@@ -148,7 +143,6 @@ async function run(number) {
   }
   else {
     await browser.close()
-    console.log('NOTHING HAPPENED')
     return {
     }
   }

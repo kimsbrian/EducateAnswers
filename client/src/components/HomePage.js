@@ -2,35 +2,41 @@ import React, { Component } from 'react'
 import { Button, Input, Form, FormGroup } from 'reactstrap';
 import axios from 'axios';
 import '../App.css';
+import CircularIndeterminate from './Spinner';
 export default class HomePage extends Component {
 
   state = {
     url: '',
     submitted: false,
     answerData: [],
-    valid: true
+    valid: true,
+    loading: false
   }
   
   onSubmit = e => {
+    this.setState({
+      loading:true,
+      submitted:false
+    });
     e.preventDefault();
     const position = this.state.url.lastIndexOf("q") + 1;
     const questionID = this.state.url.substring(position);
     if (this.state.url.length > 0 && /^\d+$/.test(questionID)) {
       axios.get(`./api/answers/${questionID}`)
         .then((response) => {
-          console.log('reach')
-          console.log(response.data)
           if (response.data.question !== undefined) {
             this.setState({
               valid: true,
               submitted: true,
-              answerData: response.data
+              answerData: response.data,
+              loading: false
             });
           }
           else{
             this.setState({
               valid: false,
-              submitted: false
+              submitted: false,
+              loading: false
             });
           }
 
@@ -44,7 +50,8 @@ export default class HomePage extends Component {
     else{
       this.setState({
         valid: false,
-        submitted: false
+        submitted: false,
+        loading: false
       });
     }
   }
@@ -87,6 +94,10 @@ export default class HomePage extends Component {
           <div className="display-linebreak">
             <h3>Invalid Url</h3>
           </div>
+        ) : <br />}
+
+        {this.state.loading ? (
+          <CircularIndeterminate/>
         ) : <br />}
 
 
