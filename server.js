@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const path = require('path');
 const answers = require('./routes/api/answers');
+const puppeteer = require('puppeteer');
 
 
 const app = express();
@@ -36,6 +37,21 @@ if(process.env.NODE_ENV === 'production'){
 
 var port = process.env.PORT || 5000;
 
-module.exports = portNumber = port;
+
+
+
+exports.port = port;
+
+async function run () {
+    let browser = await puppeteer.launch({
+        args: ['--no-sandbox'],
+        headless: true,
+      });
+      exports.browser = browser
+
+
+}
+run();
+
 
 app.listen(port, () => console.log('Server started on port: ' + port));

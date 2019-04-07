@@ -3,7 +3,8 @@ const puppeteer = require('puppeteer');
 //const CREDS = require('../config/creds');
 //const addAnswer = require('.\\
 const axios = require('axios')
-const port = require('../server')
+const port = require('../server').port
+const browser = require('../server').browser
 //const addAnswer = require('../client/src/actions/answerActions').addAnswer
 
 const cookie = {
@@ -70,10 +71,12 @@ const preparePageForTests = async (page) => {
 
 async function run(number) {
   // Launch the browser in headless mode and set up a page.
+  /*
   const browser = await puppeteer.launch({
     args: ['--no-sandbox'],
     headless: true,
   });
+  */
   const page = await browser.newPage();
 
   // Prepare for the tests (not yet implemented).
@@ -119,7 +122,8 @@ async function run(number) {
         answer: answer
       }
     });
-    await browser.close()
+    //await browser.close()
+    await page.close();
     const data = {
       question: html.question,
       answer: html.answer,
@@ -142,7 +146,8 @@ async function run(number) {
     }
   }
   else {
-    await browser.close()
+    //await browser.close()
+    await page.close();
     return {
     }
   }
