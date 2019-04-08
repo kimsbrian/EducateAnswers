@@ -1,7 +1,7 @@
 {
-  "name": "mern_shopping_list",
+  "name": "educate_answers",
   "version": "1.0.0",
-  "description": "Shopping List",
+  "description": "Educate Answers",
   "main": "server.js",
   "scripts": {
     "client-install": "npm install --prefix client",
