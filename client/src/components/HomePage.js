@@ -14,6 +14,7 @@ export default class HomePage extends Component {
   }
   
   onSubmit = e => {
+    console.log('test1');
     this.setState({
       loading:true,
       submitted:false
@@ -22,8 +23,10 @@ export default class HomePage extends Component {
     const position = this.state.url.lastIndexOf("q") + 1;
     const questionID = this.state.url.substring(position);
     if (this.state.url.length > 0 && /^\d+$/.test(questionID)) {
+      console.log('test1');
       axios.get(`./api/answers/${questionID}`)
         .then((response) => {
+          console.log(response);
           if (response.data.question !== undefined) {
             this.setState({
               valid: true,
@@ -41,10 +44,23 @@ export default class HomePage extends Component {
           }
 
         })
-        .catch((error) => {
-          console.log(error);
-        })
-        .then(() => {
+        .catch(function (error) {
+          if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+          } else if (error.request) {
+            // The request was made but no response was received
+            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+            // http.ClientRequest in node.js
+            console.log(error.request);
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log('Error', error.message);
+          }
+          console.log(error.config);
         });
     }
     else{

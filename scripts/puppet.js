@@ -9,7 +9,7 @@ const browser = require('../server').browser
 
 const cookie = {
   name: 'PHPSESSID',
-  value: '568qlkg4fp4862skepj59bpsk4',
+  value: '97a4g8f02n68f5f4mihpspd635',
   domain: '.chegg.com',
   url: 'http://chegg.com/',
   path: '/',
