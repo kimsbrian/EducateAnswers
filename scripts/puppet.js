@@ -3,7 +3,6 @@ const puppeteer = require('puppeteer');
 //const CREDS = require('../config/creds');
 //const addAnswer = require('.\\
 const axios = require('axios')
-const port = require('../server').port
 const browser = require('../server').browser
 //const addAnswer = require('../client/src/actions/answerActions').addAnswer
 
@@ -130,7 +129,7 @@ async function run(number) {
     }
 
     //addAnswer(data)
-    axios.post('http://localhost:' + port + '/api/answers/', data)
+    axios.post('http://localhost:5000/api/answers/', data)
       .then((res) => {
       })
       .catch((error) => {

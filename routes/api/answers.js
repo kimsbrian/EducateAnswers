@@ -20,6 +20,7 @@ router.get('/:id', (req, res) => {
                             url:url
                         })
                     }).catch((error) => {
+                        console.log(error)
                         return res.json('error')
                         return res.status(404).send();
                     });
@@ -35,11 +36,12 @@ router.get('/:id', (req, res) => {
 // @route    GET api/answers
 // @desc     Get All Items
 // @access   Public
+/*
 router.get('/', (req, res) => {
     Answer.find()
         .then(answers => res.json(answers))
 });
-
+*/
 // @route    POST api/items
 // @desc     Create A Item
 // @access   Public

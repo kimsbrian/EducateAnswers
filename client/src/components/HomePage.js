@@ -14,7 +14,6 @@ export default class HomePage extends Component {
   }
   
   onSubmit = e => {
-    console.log('test1');
     this.setState({
       loading:true,
       submitted:false
@@ -23,10 +22,8 @@ export default class HomePage extends Component {
     const position = this.state.url.lastIndexOf("q") + 1;
     const questionID = this.state.url.substring(position);
     if (this.state.url.length > 0 && /^\d+$/.test(questionID)) {
-      console.log('test1');
       axios.get(`./api/answers/${questionID}`)
         .then((response) => {
-          console.log(response);
           if (response.data.question !== undefined) {
             this.setState({
               valid: true,
