@@ -8,7 +8,7 @@ const browser = require('../server').browser
 
 const cookie = {
   name: 'PHPSESSID',
-  value: '97a4g8f02n68f5f4mihpspd635',
+  value: 'e6thrtfm2cagu4uaijc0ane893',
   domain: '.chegg.com',
   url: 'http://chegg.com/',
   path: '/',
@@ -70,20 +70,16 @@ const preparePageForTests = async (page) => {
 
 async function run(number) {
   // Launch the browser in headless mode and set up a page.
-  /*
+  
   const browser = await puppeteer.launch({
     args: ['--no-sandbox'],
     headless: true,
   });
-  */
+  
   const page = await browser.newPage();
 
   // Prepare for the tests (not yet implemented).
   await preparePageForTests(page);
-
-
-  // Navigate to the page that will perform the tests.
-  //const testUrl = 'https://www.distilnetworks.com/';
 
   /*
   const loginURL = 'https://www.chegg.com/auth?action=login';

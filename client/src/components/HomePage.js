@@ -10,14 +10,18 @@ export default class HomePage extends Component {
     submitted: false,
     answerData: [],
     valid: true,
-    loading: false
+    loading: false,
+    surveyAvailable: false,
+    showAnswers: false,
+    showSurvey: false
   }
-  
+
   onSubmit = e => {
     this.setState({
-      loading:true,
-      submitted:false
+      loading: true,
+      submitted: false
     });
+    console.log(window.pollfishConfig)
     e.preventDefault();
     const position = this.state.url.lastIndexOf("q") + 1;
     const questionID = this.state.url.substring(position);
@@ -25,16 +29,29 @@ export default class HomePage extends Component {
       axios.get(`./api/answers/${questionID}`)
         .then((response) => {
           if (response.data.question !== undefined) {
+            console.log(this.state.surveyAvailable)
+
+            if(this.state.surveyAvailable){
+              this.setState({
+                showSurvey: true,
+              });  
+            }
+            else{
+              this.setState({
+                submitted: true,
+              });  
+            }
+            console.log(this.state.surveyAvailable)
             this.setState({
               valid: true,
-              submitted: true,
               answerData: response.data,
               loading: false
             });
           }
-          else{
+          else {
             this.setState({
               valid: false,
+              showSurvey: false,
               submitted: false,
               loading: false
             });
@@ -60,9 +77,10 @@ export default class HomePage extends Component {
           console.log(error.config);
         });
     }
-    else{
+    else {
       this.setState({
         valid: false,
+        showSurvey: false,
         submitted: false,
         loading: false
       });
@@ -72,6 +90,62 @@ export default class HomePage extends Component {
 
   onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
+  }
+
+  onShow = () => {
+    window.Pollfish.showFullSurvey();
+
+  }
+
+  componentDidMount() {
+    window.onSurveyAvailable =  () => {
+      this.setState({
+        surveyAvailable: true
+      });
+      console.log("survey is available");   
+     }
+    window.onSurveyNotAvailable =  () => {
+      this.setState({
+        submitted: true,
+        showSurvey: false,
+        surveyAvailable: false,
+
+      }); 
+      window.Pollfish.hide();
+      console.log("survey is not available");   
+
+    }
+    window.onSurveyCompleted =  () => {
+      this.setState({
+        submitted: true,
+        showSurvey: false,
+        surveyAvailable: false,
+        
+      });   
+      window.Pollfish.hide();
+      console.log("survey is completed");   
+
+    }
+    window.onUserDisqualified =  () => {
+      this.setState({
+        submitted: true,
+        showSurvey: false,
+        surveyAvailable: false
+      });   
+      window.Pollfish.hide();
+      console.log("survey is disqualified");   
+ 
+    }
+    window.pollfishReady =  () => {
+      window.Pollfish.hide();
+    }
+ 
+    const s = document.createElement('script');
+    s.type = 'text/javascript';
+    s.async = true;
+    s.innerHTML = "var pollfishConfig = {api_key: \"65ab487a-ea4e-4703-8ade-a73f7039c3c7\", debug: true,surveyAvailable: onSurveyAvailable, surveyNotAvailable: onSurveyNotAvailable,surveyCompletedCallback: onSurveyCompleted,userNotEligibleCallback: onUserDisqualified,ready: pollfishReady};";
+    document.body.appendChild(s);
+
   }
   render() {
     const { answerData } = this.state;
@@ -109,23 +183,30 @@ export default class HomePage extends Component {
           </div>
         ) : <br />}
 
-        {this.state.loading ? (
-          <CircularIndeterminate/>
-        ) : <br />}
-
-
-
-        {this.state.submitted ? (
+        {this.state.showSurvey ? (
           <div className="display-linebreak">
+          {window.Pollfish.showFullSurvey()}
+            <h3>Please complete survey to see the answers</h3>
             <h3>Question</h3>
-            <div className="content" dangerouslySetInnerHTML={{__html: answerData.question}}></div>
-            <h3>Answer</h3>
-            <div className="content" dangerouslySetInnerHTML={{__html: answerData.answer}}></div>
+            <div className="content" dangerouslySetInnerHTML={{ __html: answerData.question }}></div>
           </div>
         ) : <br />}
 
-        <div>
 
+        {this.state.loading ? (
+          <CircularIndeterminate />
+        ) : <br />}
+
+        {this.state.submitted ? (
+          
+          <div className="display-linebreak">
+          <h3>Question</h3>
+            <div className="content" dangerouslySetInnerHTML={{ __html: answerData.question }}></div>
+            <h3>Answer</h3>
+            <div className="content" dangerouslySetInnerHTML={{ __html: answerData.answer }}></div>
+          </div>
+        ) : <br />}
+        <div>
         </div>
       </div>
     )

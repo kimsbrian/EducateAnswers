@@ -17,24 +17,26 @@ app.use(bodyParser.json());
 const db = require('./config/keys').mongoURI;
 
 //Connect to Mongo
-mongoose.connect(db,{ useNewUrlParser: true })
+mongoose.connect(db, { useNewUrlParser: true })
     .then(() => console.log('MongoDB Connected...'))
     .catch(err => console.log(err));
 
 // Use Routes
-app.use('/api/answers',answers);
+app.use('/api/answers', answers);
 
 
-///*
+/*
 
 // Serve static assets if in production
-    //Set static folder
+//Set static folder
+if (process.env.NODE_ENV === 'production') {
     app.use(express.static('client/build'));
 
-    app.get('*',(req,res) => {
-        res.sendFile(path.resolve(__dirname , 'client' , 'build' , 'index.html'));
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
     });
-//*/
+}
+*/
 
 var port = process.env.PORT || 5000;
 
@@ -43,13 +45,13 @@ var port = process.env.PORT || 5000;
 
 exports.port = port;
 
-async function run () {
+async function run() {
     let browser = await puppeteer.launch({
         args: ['--no-sandbox'],
         //args: ['--no-sandbox','--proxy-server=10.8.0.1:1080'],
         headless: true,
-      });
-      exports.browser = browser
+    });
+    exports.browser = browser
 
 
 }

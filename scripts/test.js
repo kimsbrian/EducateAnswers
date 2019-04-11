@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
 const axios = require('axios')
 const cookie = {
     name: 'PHPSESSID',
-    value: '97a4g8f02n68f5f4mihpspd635',
+    value: 'e6thrtfm2cagu4uaijc0ane893',
     domain: '.chegg.com',
     url: 'http://chegg.com/',
     path: '/',
@@ -85,13 +85,6 @@ async function run(number) {
             answer: html.answer,
             url: number
         }
-
-        axios.post('http://localhost:5000/api/answers/', data)
-            .then((res) => {
-            })
-            .catch((error) => {
-                console.error(error)
-            })
 
         console.log(html.question)
         console.log(html.answer)
